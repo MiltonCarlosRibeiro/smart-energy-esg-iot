@@ -1,0 +1,44 @@
+<!doctype html>
+<html lang="pt-br">
+<head>
+    <meta charset="utf-8"/>
+    <title>Smart Energy ESG IoT</title>
+    <meta name="viewport" content="width=device-width,initial-scale=1"/>
+    <link rel="stylesheet" href="/assets/style.css"/>
+    <script defer src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script defer src="/assets/ui.js"></script>
+    <script defer src="/assets/iot.js"></script>
+</head>
+<body>
+<header>
+    <h1>⚡ Smart Energy ESG IoT</h1>
+    <p>Monitor de presença, luz e temperatura</p>
+</header>
+
+<main class="grid">
+    <section class="card">
+        <h2>Status da Sala</h2>
+        <div class="status">
+            <div><strong>Sala:</strong> <span id="room">Sala 101</span></div>
+            <div><strong>Presença:</strong> <span id="presence">—</span></div>
+            <div><strong>Luz:</strong> <span id="light">—</span></div>
+            <div><strong>Temp (°C):</strong> <span id="temp">—</span></div>
+            <div><strong>Última leitura:</strong> <span id="ts">—</span></div>
+        </div>
+
+        <div class="controls">
+            <button id="btnPresence">Alternar Presença</button>
+            <button id="btnLight">Alternar Luz</button>
+            <button id="btnSend">Enviar Telemetria</button>
+        </div>
+    </section>
+
+    <section class="card">
+        <h2>Tendência de Temperatura</h2>
+        <canvas id="chartTemp"></canvas>
+    </section>
+</main>
+
+<footer>Feito com 💚 para ESG</footer>
+</body>
+</html>

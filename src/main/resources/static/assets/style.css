@@ -1,0 +1,80 @@
+:root {
+    --bg: #0b1220;
+    --card: #121a2a;
+    --text: #e6eef7;
+    --muted: #9fb3c8;
+    --accent: #58e1a3;
+}
+
+* {
+    box-sizing: border-box;
+}
+
+body {
+    margin: 0;
+    font-family: system-ui, -apple-system, Segoe UI, Roboto, Ubuntu, Helvetica, Arial;
+    color: var(--text);
+    background: linear-gradient(180deg, #0b1220, #111b2e);
+}
+
+header {
+    padding: 24px 20px;
+    text-align: center;
+}
+
+h1 {
+    margin: 0 0 6px 0
+}
+
+.grid {
+    display: grid;
+    grid-template-columns:1fr 1fr;
+    gap: 16px;
+    padding: 0 20px 24px
+}
+
+@media (max-width: 900px) {
+    .grid {
+        grid-template-columns:1fr
+    }
+}
+
+.card {
+    background: var(--card);
+    border: 1px solid #1f2b44;
+    border-radius: 16px;
+    padding: 16px;
+    box-shadow: 0 4px 20px rgba(0, 0, 0, .25)
+}
+
+.status {
+    display: grid;
+    grid-template-columns:repeat(2, 1fr);
+    gap: 8px;
+    margin-bottom: 12px
+}
+
+.controls {
+    display: flex;
+    gap: 10px;
+    flex-wrap: wrap
+}
+
+button {
+    background: #1f2b44;
+    border: none;
+    color: var(--text);
+    padding: 10px 14px;
+    border-radius: 10px;
+    cursor: pointer
+}
+
+button:hover {
+    background: #274166
+}
+
+footer {
+    padding: 12px 20px;
+    text-align: center;
+    color: var(--muted)
+}
