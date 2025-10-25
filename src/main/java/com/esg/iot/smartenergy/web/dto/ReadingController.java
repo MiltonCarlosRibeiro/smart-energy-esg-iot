@@ -25,22 +25,24 @@ public class ReadingController {
         this.deviceRepo = deviceRepo;
     }
 
-    /** Envia telemetria: POST /api/telemetry */
+    /**
+     * Envia telemetria: POST /api/telemetry
+     */
     @PostMapping("/telemetry")
     public ResponseEntity<Reading> ingest(@Valid @RequestBody TelemetryDTO dto) {
         // upsert simples de Device pelo "name" = deviceId
-        deviceRepo.findByName(dto.deviceId()).orElseGet(() ->
-                deviceRepo.save(new Device(
-                        null,
-                        dto.deviceId(),
-                        dto.room(),
-                        Instant.now()
-                ))
+        // garante device cadastrado (upsert simples) - evita exception com duplicatas
+        deviceRepo.findFirstByNameOrderByCreatedAtDesc(dto.deviceId()).orElseGet(() ->
+                deviceRepo.save(new Device(null, dto.deviceId(), dto.room(), Instant.now()))
         );
+
 
         Instant ts = Instant.now();
         if (dto.ts() != null && !dto.ts().isBlank()) {
-            try { ts = Instant.parse(dto.ts()); } catch (DateTimeParseException ignored) {}
+            try {
+                ts = Instant.parse(dto.ts());
+            } catch (DateTimeParseException ignored) {
+            }
         }
 
         Reading r = new Reading(
@@ -56,7 +58,9 @@ public class ReadingController {
         return ResponseEntity.ok(readingRepo.save(r));
     }
 
-    /** Última leitura por sala: GET /api/readings/latest?room=Sala%20101 */
+    /**
+     * Última leitura por sala: GET /api/readings/latest?room=Sala%20101
+     */
     @GetMapping("/readings/latest")
     public ResponseEntity<Reading> latest(@RequestParam String room) {
         return readingRepo.findTopByRoomOrderByTsDesc(room)
@@ -64,7 +68,9 @@ public class ReadingController {
                 .orElse(ResponseEntity.noContent().build());
     }
 
-    /** Histórico simples: GET /api/readings?room=Sala%20101 */
+    /**
+     * Histórico simples: GET /api/readings?room=Sala%20101
+     */
     @GetMapping("/readings")
     public List<Reading> history(@RequestParam String room) {
         return readingRepo.findByRoomOrderByTsDesc(room);
