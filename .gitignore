@@ -14,8 +14,15 @@ Desktop.ini
 hs_err_pid*
 replay_pid*
 *.hprof
-# Maven wrapper JAR (gerado pelo wrapper em algumas versões)
-.mvn/wrapper/maven-wrapper.jar
+
+# Maven Wrapper (incluir no repo!)
+/.mvn/
+!/.mvn/wrapper/
+!/.mvn/wrapper/maven-wrapper.jar
+/mvnw.cmd
+/mvnw
+!mvnw
+!mvnw.cmd
 
 # ===== Gradle (se algum dia usar) =====
 /.gradle/
@@ -23,12 +30,12 @@ replay_pid*
 /build/
 
 # ===== IntelliJ IDEA =====
-.idea/
+/.idea/
 *.iml
 *.iws
 *.ipr
 
-# ===== Eclipse (caso alguém use) =====
+# ===== Eclipse =====
 .project
 .classpath
 .settings/
@@ -40,7 +47,7 @@ replay_pid*
 .vscode/
 .history/
 
-# ===== Node/Web (caso adicione front build) =====
+# ===== Node/Web =====
 node_modules/
 dist/
 coverage/
@@ -51,6 +58,8 @@ coverage/
 *.swo
 ~$*
 *.tmp
+*.orig
+*.rej
 
 # ===== Env & Segredos =====
 .env
@@ -64,7 +73,12 @@ coverage/
 # ===== Configs locais com credenciais =====
 src/main/resources/application.properties
 src/main/resources/application-local.properties
+src/main/resources/application.yml
+src/main/resources/application-local.yml
 src/main/resources/*.secret.properties
+
+# Permitir arquivo de exemplo (fica versionado)
+!src/main/resources/application-example.properties
 
 # ===== Outros opcionais =====
 /README_images/
