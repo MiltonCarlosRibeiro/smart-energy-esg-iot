@@ -6,9 +6,7 @@
     --accent: #58e1a3;
 }
 
-* {
-    box-sizing: border-box;
-}
+* { box-sizing: border-box; }
 
 body {
     margin: 0;
@@ -17,26 +15,19 @@ body {
     background: linear-gradient(180deg, #0b1220, #111b2e);
 }
 
-header {
-    padding: 24px 20px;
-    text-align: center;
-}
+header { padding: 24px 20px; text-align: center; }
 
-h1 {
-    margin: 0 0 6px 0
-}
+h1 { margin: 0 0 6px 0 }
 
 .grid {
     display: grid;
-    grid-template-columns:1fr 1fr;
+    grid-template-columns: 1fr 1fr;
     gap: 16px;
     padding: 0 20px 24px
 }
 
 @media (max-width: 900px) {
-    .grid {
-        grid-template-columns:1fr
-    }
+    .grid { grid-template-columns: 1fr }
 }
 
 .card {
@@ -49,16 +40,12 @@ h1 {
 
 .status {
     display: grid;
-    grid-template-columns:repeat(2, 1fr);
+    grid-template-columns: repeat(2, 1fr);
     gap: 8px;
     margin-bottom: 12px
 }
 
-.controls {
-    display: flex;
-    gap: 10px;
-    flex-wrap: wrap
-}
+.controls { display: flex; gap: 10px; flex-wrap: wrap }
 
 button {
     background: #1f2b44;
@@ -69,9 +56,7 @@ button {
     cursor: pointer
 }
 
-button:hover {
-    background: #274166
-}
+button:hover { background: #274166 }
 
 footer {
     padding: 12px 20px;

@@ -7,6 +7,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.net.URI;
+import java.time.Instant;
 import java.util.List;
 
 @RestController
@@ -20,33 +21,51 @@ public class DeviceController {
     }
 
     @GetMapping
-    public List<Device> list(@RequestParam(required = false) String room) {
-        return (room == null || room.isBlank()) ? repo.findAll() : repo.findByRoom(room);
-    }
-
-    @GetMapping("{id}")
-    public ResponseEntity<Device> get(@PathVariable String id) {
-        return repo.findById(id).map(ResponseEntity::ok).orElse(ResponseEntity.notFound().build());
+    public List<Device> all() {
+        return repo.findAll();
     }
 
     @PostMapping
-    public ResponseEntity<?> create(@RequestBody @Valid Device d) {
-        if (repo.existsByName(d.getName()))
-            return ResponseEntity.unprocessableEntity().body("Device name already exists");
-        var saved = repo.save(d);
-        return ResponseEntity.created(URI.create("/api/devices/" + saved.getId())).body(saved);
+    public ResponseEntity<Device> create(@Valid @RequestBody Device d) {
+        // Se o payload veio sem createdAt, define agora
+        Instant created = (d.createdAt() == null) ? Instant.now() : d.createdAt();
+
+        Device toSave = new Device(
+                null,           // id será gerado pelo Mongo
+                d.name(),
+                d.room(),
+                created
+        );
+        Device saved = repo.save(toSave);
+        return ResponseEntity
+                .created(URI.create("/api/devices/" + saved.id()))
+                .body(saved);
     }
 
-    @PutMapping("{id}")
-    public ResponseEntity<?> update(@PathVariable String id, @RequestBody @Valid Device d) {
-        return repo.findById(id).map(found -> {
-            found.setName(d.getName());
-            found.setRoom(d.getRoom());
-            return ResponseEntity.ok(repo.save(found));
-        }).orElse(ResponseEntity.notFound().build());
+    @GetMapping("/{id}")
+    public ResponseEntity<Device> byId(@PathVariable String id) {
+        return repo.findById(id)
+                .map(ResponseEntity::ok)
+                .orElse(ResponseEntity.notFound().build());
     }
 
-    @DeleteMapping("{id}")
+    @PutMapping("/{id}")
+    public ResponseEntity<Device> update(@PathVariable String id, @Valid @RequestBody Device d) {
+        return repo.findById(id)
+                .map(existing -> {
+                    // mantém createdAt original; atualiza name/room
+                    Device updated = new Device(
+                            existing.id(),
+                            d.name(),
+                            d.room(),
+                            existing.createdAt()
+                    );
+                    return ResponseEntity.ok(repo.save(updated));
+                })
+                .orElse(ResponseEntity.notFound().build());
+    }
+
+    @DeleteMapping("/{id}")
     public ResponseEntity<Void> delete(@PathVariable String id) {
         if (!repo.existsById(id)) return ResponseEntity.notFound().build();
         repo.deleteById(id);
